@@ -2,17 +2,13 @@
 # https://codeburst.io/how-to-build-a-graphql-wrapper-for-a-restful-api-in-python-b49767676630
 # example request: {reviews(id:1238125) { comments } }
 
-from graphene import ObjectType, String, Boolean, ID, List, Field, Int
+from graphene import ObjectType, String, Boolean, ID, List, Field, Int, Float
 from airbnb import Api
 import json
 import os
 from collections import namedtuple
 import requests
 import xmltodict
-
-
-# Due to quantitative access restrictions, a key is required to access BehindTheName.com's API. Enter yours here.
-BEHIND_THE_NAME_API_KEY = "mi850283787"
 
 
 #############
@@ -29,16 +25,82 @@ def json2obj(data):
 # CLASSES #
 ###########
 
-### BehindTheName Classes ###
-class NameUsage(ObjectType):
-    usage_code = String()
-    usage_full = String()
-    usage_gender = String()
+### PokéAPI Classes ###
 
-class Name(ObjectType):
+# This is a generic object for storing any object type with two elements: "name" and "url"
+# Based on the construction of this API, this covers several different types of objects,
+# including game version, item, ability, and several others.
+class Object(ObjectType):
     name = String()
-    gender = String()
-    usages = List(NameUsage)
+    url = String()
+
+class AbilityListObject(ObjectType):
+    ability = Field(Object)
+    is_hidden = Boolean
+    slot = Int()
+
+class GameIndex(ObjectType):
+    game_index = Int()
+    version = Field(Object)
+
+class ItemVersionDetail(ObjectType):
+    rarity = Int()
+    version = Field(Object)
+
+class Item(ObjectType):
+    item = Field(Object)
+    version_details = List(ItemVersionDetail)
+
+class ItemListObject(ObjectType):
+    item = Field(Object)
+    version_details = List(ItemVersionDetail)
+
+class MoveVersionDetail(ObjectType):
+    level_learned_at = Int()
+    move_learn_method = Field(Object)
+    version_group = Field(Object)
+
+class MoveObject(ObjectType):
+    move = Object()
+    version_group_details = List(MoveVersionDetail)
+
+class Sprites(ObjectType):
+    back_default = String()
+    back_female = String()
+    back_shiny = String()
+    back_shint_female = String()
+    front_default = String()
+    front_female = String()
+    front_shiny = String()
+    front_shint_female = String()
+
+class Stat(ObjectType):
+    base_stat = Int()
+    effort = Int()
+    stat = Field(Object)
+    
+class Type(ObjectType):
+    slot = Int()
+    type = Field(Object)
+
+class Pokemon(ObjectType):
+    abilities = List(AbilityListObject)
+    base_experience = Int()
+    forms = List(Object)
+    game_indices = List(GameIndex)
+    height = Int()
+    held_items = List(ItemListObject)
+    id = ID()
+    is_default = Boolean()
+    location_area_encounters = String()
+    moves = List(MoveObject)
+    name = String()
+    order = Int()
+    species = Field(Object)
+    sprites = Sprites()
+    stats = List(Stat)
+    types = List(Type)
+    weight = Int()
 
 
 ### AirBNB Classes ###
@@ -90,17 +152,18 @@ class Query(ObjectType):
         return response_list
     
     
-    ### BehindTheName ###
-    names = List(Name, name=String(required=True))
+    ### PokéAPI ###
+    pokemon_by_name = Field(Pokemon, name=String(required=True))
     
     @staticmethod
-    def resolve_names(parent, info, name):
+    def resolve_pokemon_by_name(parent, info, name):
         
-        URL = "https://www.behindthename.com/api/lookup.json"
-        params = {"key": BEHIND_THE_NAME_API_KEY, "name": name}
-        r = requests.get(URL, params=params)
+        URL = f"https://www.pokeapi.co/api/v2/pokemon/{name.lower()}"
         
-        response_list = json2obj(json.dumps(r.json()))
-        return response_list
+        r = requests.get(URL)
+        
+        response_obj = json2obj(json.dumps(r.json()))
+        
+        return response_obj
         
     

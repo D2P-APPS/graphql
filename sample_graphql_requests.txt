@@ -9,6 +9,7 @@
   }
 }
 
+# Single-line version (for use in URLs, such as with tools like POSTMAN)
 { reviews(id:1238125){ comments author{ firstName } } }
 
 ----------------------
@@ -35,6 +36,7 @@
 
 }
 
+# Single-line version (for use in URLs, such as with tools like POSTMAN)
 {  rev1:reviews(id:1238125){ comments author{ firstName } }  rev2:reviews(id:23810849){ author{ firstName } recipient{ firstName } }  }
 
 -------------------------
@@ -42,7 +44,6 @@
 # can do this to multiple servers, as well
 
 {
-  
   rev1: reviews(id:1238125) {
     comments
     author {
@@ -59,23 +60,26 @@
     }
   }
   
-  steve: names(name:"Steve") {
-  	name
-    usages {
-      usageCode
-      usageFull
-      usageGender
+  pikachu: pokemonByName(name:"Pikachu") {
+    name
+    id
+    types {
+      type {
+        name
+      }
     }
   }
   
-  morgan: names(name:"Morgan") {
-  	name
-    usages {
-      usageFull
-      usageGender
+  gyarados: pokemonByName(name:"gyarados") {
+    name
+    id
+    types {
+      type {
+        name
+      }
     }
   }
-  
 }
 
-{  rev1:reviews(id:1238125){ comments author{ firstName } }  rev2:reviews(id:23810849){ author{ firstName } recipient{ firstName } }  steve:names(name:"Steve"){ name usages{ usageCode usageFull usageGender } }  morgan:names(name:"Morgan"){ name usages{ usageFull usageGender } }  }
+# Single-line version (for use in URLs, such as with tools like POSTMAN)
+{ rev1:reviews(id:1238125){ comments author{ firstName } }  rev2:reviews(id:23810849){ author{ firstName } recipient{ firstName } }  pikachu:pokemonByName(name:"Pikachu"){ name id types{ type{ name } } }  gyarados:pokemonByName(name:"gyarados"){ name id types{ type{ name } } } }
