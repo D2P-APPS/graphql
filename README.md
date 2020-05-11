@@ -12,4 +12,4 @@ The project is built to utilize 2 APIs: AirBNB and PokéAPI. You'll be able to u
 
 Also included is a .txt file that has sample queries that you can utilize. The first two use only AirBNB queries, while the third queries both AirBNB and the PokéAPI.
 
-Additionally, he .ipynb file is a Jupyter Notebook file that allows you can copy a multi-line query into (for easier visual while building) and it'll return the query in a single line.
+Additionally, the .ipynb file is a Jupyter Notebook file that allows you can copy a multi-line query into (for easier visual while building) and it'll return the query in a single line.
