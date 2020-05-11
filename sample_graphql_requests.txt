@@ -1,0 +1,81 @@
+# 1 basic request
+
+{
+  reviews(id:1238125) {
+    comments
+    author {
+      firstName
+    }
+  }
+}
+
+{ reviews(id:1238125){ comments author{ firstName } } }
+
+----------------------
+
+# 2 separate requests simultaneously
+
+{
+  
+  rev1: reviews(id:1238125) {
+    comments
+    author {
+      firstName
+    }
+  }
+  
+  rev2: reviews(id:23810849) {
+    author{
+      firstName
+    }
+    recipient {
+      firstName
+    }
+  }
+
+}
+
+{  rev1:reviews(id:1238125){ comments author{ firstName } }  rev2:reviews(id:23810849){ author{ firstName } recipient{ firstName } }  }
+
+-------------------------
+
+# can do this to multiple servers, as well
+
+{
+  
+  rev1: reviews(id:1238125) {
+    comments
+    author {
+      firstName
+    }
+  }
+  
+  rev2: reviews(id:23810849) {
+    author{
+      firstName
+    }
+    recipient {
+      firstName
+    }
+  }
+  
+  steve: names(name:"Steve") {
+  	name
+    usages {
+      usageCode
+      usageFull
+      usageGender
+    }
+  }
+  
+  morgan: names(name:"Morgan") {
+  	name
+    usages {
+      usageFull
+      usageGender
+    }
+  }
+  
+}
+
+{  rev1:reviews(id:1238125){ comments author{ firstName } }  rev2:reviews(id:23810849){ author{ firstName } recipient{ firstName } }  steve:names(name:"Steve"){ name usages{ usageCode usageFull usageGender } }  morgan:names(name:"Morgan"){ name usages{ usageFull usageGender } }  }
