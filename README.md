@@ -3,8 +3,9 @@
 This code allows you to jump quickly into experimenting with the GraphQL GatewayAPI. Here's how!
 
 1. Clone this repository to a local directory
-2. Using Python 3, run server.py. Everything you need _should_ be in Python3, so you shouldn't need to download anything extra.
-3. Navigate a web browser to https://localhost:5000/graphql and gets started querying.
+1. Using Python 3, run `pip install -r requirements.txt`
+2. Using Python 3, run server.py (`python server.py`). Everything you need _should_ be in Python3, so you shouldn't need to download anything extra.
+3. Navigate a web browser to http://localhost:5000/graphql and gets started querying.
 
 
 
@@ -13,3 +14,10 @@ The project is built to utilize 2 APIs: AirBNB and PokéAPI. You'll be able to u
 Also included is a .txt file that has sample queries that you can utilize. The first two use only AirBNB queries, while the third queries both AirBNB and the PokéAPI.
 
 Additionally, the .ipynb file is a Jupyter Notebook file that allows you can copy a multi-line query into (for easier visual while building) and it'll return the query in a single line.
+
+
+## AirBnb API
+See https://github.com/nderkach/airbnb-python
+
+## Pokemon API
+See https://pokeapi.co/
